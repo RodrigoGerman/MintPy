@@ -194,7 +194,11 @@ def get_boxes4deforming_area(vel_file, mask_file, step=2, num_pixel=30**2, min_p
 def plot_colorbar(out_file, vmin, vmax, cmap='jet', figsize=(0.18, 3.6)):
     fig, cax = plt.subplots(figsize=figsize)
     norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)  # normalize velocity colors between 0.0 and 1.0
-    cbar = mpl.colorbar.ColorbarBase(cax, cmap=cmap, norm=norm, orientation='vertical')
+    #This line sends an error since a string is being sent instead of the cmap object.
+    #cbar = mpl.colorbar.ColorbarBase(cax, cmap=cmap, norm=norm, orientation='vertical')
+    #This new line solves the error by sending cmap object.
+    cbar = mpl.colorbar.ColorbarBase(cax, cmap=mpl.cm.get_cmap(cmap), norm=norm, orientation='vertical')
+    
     cbar.set_label('{} [{}]'.format("Mean LOS velocity", "cm/year"), fontsize=12)
     cbar.locator = mpl.ticker.MaxNLocator(nbins=7)
     cbar.update_ticks()
